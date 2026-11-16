@@ -116,9 +116,8 @@
   .cand-body { padding: 10px 11px; }
   .door { grid-template-columns: 38px minmax(0, 1fr) 16px; padding: 11px 12px; }
   .door-icon { width: 38px; height: 38px; }
-  .top-actions .btn-label { display: none; }
-  .top-actions .btn { width: 38px; padding: 0; }
-  .top-actions .btn svg { width: 18px; height: 18px; }
+  .top-actions .btn { padding: 6px 10px; }
+  .top-actions .btn svg { width: 16px; height: 16px; }
   .empty h1 { font-size: 33px; }
   .empty-lead { font-size: 13.5px; }
 }

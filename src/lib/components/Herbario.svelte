@@ -62,7 +62,7 @@
       <p class="eyebrow">Tu jardín</p>
       <h2>Respuestas</h2>
     </div>
-    <button class="btn tiny primary" onclick={newConsultation}><Plus size={13} /> Nueva</button>
+    <button class="btn tiny primary" onclick={newConsultation} title="Nueva consulta (N)"><Plus size={13} /> Nueva <kbd>N</kbd></button>
   </div>
 
   <label class="mem-search">

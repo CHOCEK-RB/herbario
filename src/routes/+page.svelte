@@ -117,13 +117,13 @@
       {#if node}<span class="sep"><ChevronRight size={13} /></span><span>{node.title}</span>{/if}
     </nav>
     <div class="top-actions">
-      <button class="btn ghost" onclick={openSearch} aria-label="Buscar (tecla /)">
+      <button class="btn ghost" onclick={openSearch} aria-label="Buscar (tecla /)" title="Buscar (/)">
         <Search size={15} /><span class="btn-label">Buscar</span><kbd>/</kbd>
       </button>
-      <button class="btn ghost desktop-only" onclick={() => openLedger('sesion')}>
+      <button class="btn ghost desktop-only" onclick={() => openLedger('sesion')} title="Historial (L)">
         <ScrollText size={15} /><span class="btn-label">Historial</span><kbd>L</kbd>
       </button>
-      <button class="btn ghost desktop-only" onclick={openMap}>
+      <button class="btn ghost desktop-only" onclick={openMap} title="Árbol (M)">
         <GitBranch size={15} /><span class="btn-label">Árbol</span><kbd>M</kbd>
       </button>
     </div>
