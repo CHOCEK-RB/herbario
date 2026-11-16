@@ -226,10 +226,10 @@
             <div class="results-empty">Ninguna respuesta con ese filtro.</div>
           {:else}
             {#each shownNodes as n (n.id)}
-              <article class="entry">
+              <article class="entry" class:active={n.id === app.activeNodeId}>
                 <header>
                   <div>
-                    <strong>{n.title}</strong>
+                    <strong>{n.title}{#if n.id === app.activeNodeId} <span class="lines">actual</span>{/if}</strong>
                     <span class="entry-meta">{n.date} · {branches.find((b) => b.id === n.branchId)?.name ?? '—'} · {statusLabel[n.status]}</span>
                   </div>
                   <button class="btn tiny" onclick={() => go(n.id)}>
@@ -301,10 +301,20 @@
 
           <div class="ledger-body">
             {#if archiveFiltered.length === 0}
-              <div class="results-empty">Ninguna carta con ese filtro para {node.species}.</div>
+              <div class="results-empty">
+                <p>Ninguna carta con ese filtro para {node.species}.</p>
+                <button
+                  class="btn tiny"
+                  onclick={() => {
+                    archiveScope = 'todas';
+                    archiveType = null;
+                    archiveQuery = '';
+                  }}
+                >Limpiar filtros</button>
+              </div>
             {:else}
               <p class="voice-meta">
-                Cartas de esta respuesta y heredadas de otras respuestas, filtrables por ámbito y tipo.{activeScopedCount ? ` ${activeScopedCount} reglas activas de especie/global.` : ''}
+                Cartas de esta respuesta y heredadas de otras respuestas, filtrables por alcance y tipo.{activeScopedCount ? ` ${activeScopedCount} reglas heredadas activas.` : ''}
               </p>
               <div class="ledger-cards">
                 {#each archiveShown as c (c.id)}

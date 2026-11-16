@@ -217,6 +217,7 @@
   }
 
   function loadExample() {
+    if (nodes.length > 1 && !confirm('¿Cargar el árbol de ejemplo? Se reemplazará la sesión actual.')) return;
     query = '';
     collapsed.clear();
     loadTreeDemo();
@@ -240,6 +241,7 @@
   {@const parent = n.parentId ? byId.get(n.parentId) : undefined}
   {@const open = q ? true : !collapsed.has(n.id)}
   {@const tone = depthTones[depth % depthTones.length]}
+  {@const pendingCount = n.cards.filter((c) => c.type === 'supuesto' && c.state === 'sin_confirmar').length}
   <li
     class="tree-item"
     class:on-path={pathIds.has(n.id)}
@@ -275,6 +277,7 @@
           <span class="tree-date">{shortDate(n.date)}</span>
           {#if !parent || parent.species !== n.species}<span class="tree-species">{n.species}</span>{/if}
           {#if n.status !== 'lista'}<span class="status {n.status}">{n.status}</span>{/if}
+          {#if pendingCount > 0}<span class="pending">{pendingCount} por confirmar</span>{/if}
           {#if kids.length > 1}
             <span class="tree-forks"><GitFork size={10} />{kids.length}</span>
           {/if}

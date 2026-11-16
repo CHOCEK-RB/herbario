@@ -202,12 +202,21 @@
         {#if results.length === 0}
           <div class="results-empty">
             <Search size={22} />
-            <p>Nada con esos filtros. Prueba con menos facetas.</p>
+            <p>Nada con esos filtros.</p>
+            <button
+              class="btn tiny"
+              onclick={() => {
+                app.searchQuery = '';
+                typeFilter = null;
+                onlyUnconfirmed = false;
+                speciesFilter = null;
+              }}
+            >Limpiar filtros</button>
           </div>
         {:else}
           {#each results as r (r.kind + r.id)}
             <button class="result" onclick={() => pick(r)}>
-              <span class="t">{r.title}</span>
+              <span class="t">{r.title}{#if r.id === app.activeNodeId} <span class="lines">actual</span>{/if}</span>
               <span class="s">{r.sub}</span>
               <span class="snip">{r.snippet}</span>
               <span class="kind" class:carta={r.kind === 'carta'}>
