@@ -185,6 +185,15 @@
 
   function download() {
     if (!node) return;
+    const unconfirmed = node.cards.filter((c) => c.type === 'supuesto' && c.state === 'sin_confirmar').length;
+    if (node.status !== 'lista' || unconfirmed > 0) {
+      const reasons = [
+        node.status === 'borrador' ? 'es un borrador incompleto' : '',
+        node.status === 'desactualizada' ? 'está desactualizada' : '',
+        unconfirmed > 0 ? `tiene ${unconfirmed} supuesto(s) sin confirmar` : ''
+      ].filter(Boolean);
+      if (!confirm(`Esta respuesta ${reasons.join(' y ')}. ¿Exportar de todos modos?`)) return;
+    }
     const context = node.cards
       .map((c) => `- [${c.type}] ${c.text} (${c.source === 'usuario' ? 'tú' : 'IA'})`)
       .join('\n');
@@ -308,7 +317,7 @@
         </div>
       </div>
     {:else if node.status === 'desactualizada'}
-      <div class="banner">
+      <div class="banner stale">
         <CircleExclamationPoint size={17} />
         <div>
           <strong>El contexto cambió:</strong>
@@ -335,8 +344,13 @@
           {#each segments(node) as part}
             {#if part.term}
               <span class="term-wrap">
-                <button class="term" onclick={() => (openTerm = openTerm?.word === part.term?.word ? null : part.term!)}>
-                  {node.replaced[part.term.word] ?? part.text}<sup>?</sup>
+                <button
+                  class="term"
+                  class:replaced={Boolean(node.replaced[part.term.word])}
+                  title={node.replaced[part.term.word] ? `Término original: ${part.term.word}` : part.term.def}
+                  onclick={() => (openTerm = openTerm?.word === part.term?.word ? null : part.term!)}
+                >
+                  {node.replaced[part.term.word] ?? part.text}<sup>{node.replaced[part.term.word] ? '↺' : '?'}</sup>
                 </button>
                 {#if openTerm?.word === part.term.word}
                   <span class="popover">
@@ -416,7 +430,7 @@
     {#if done >= 3 && node.sections.length}
       <section class="sections">
         {#if parentNode && parentDiff.length}
-          <details class="section">
+          <details class="section section-diff" open>
             <summary>
               <span class="section-title">Qué cambió desde «{parentNode.title}»</span>
               <span class="section-cue">

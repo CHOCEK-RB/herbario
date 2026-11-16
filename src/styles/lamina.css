@@ -159,6 +159,8 @@
   color: var(--ochre-dark);
 }
 .banner > svg { width: 17px; height: 17px; color: var(--ochre); }
+.banner.stale { border-color: color-mix(in srgb, var(--terracotta) 40%, transparent); background: var(--terracotta-soft); color: var(--sienna-dark); }
+.banner.stale > svg { color: var(--terracotta); }
 .banner .btn { margin-left: auto; }
 .banner-actions { display: flex; gap: 6px; margin-left: auto; }
 
@@ -217,7 +219,8 @@
   font: inherit;
   transition: background 140ms var(--ease), color 140ms var(--ease);
 }
-.term sup { color: var(--moss); font-size: 0.55em; margin-left: 1px; }
+.term sup { color: var(--moss); font-size: 0.7em; margin-left: 1px; }
+.term.replaced { background: var(--moss-soft); border-bottom-style: solid; padding: 0 3px; border-radius: 4px; }
 .term:hover { background: var(--moss-soft); color: var(--moss-dark); }
 
 .popover {
