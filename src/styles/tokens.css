@@ -45,7 +45,7 @@
   --danger-soft: #f8dfd9;
   --panel-bright: #fffaee;
   --panel-warm: #fff8ea;
-  --muted-soft: #9a826c;
+  --muted-soft: #6f5846;
   --honey: #b3761d;
   --honey-mid: #96671d;
   --honey-soft: #e0b06a;
@@ -81,23 +81,7 @@ body {
   font-size: 15px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
-  background:
-    radial-gradient(1100px 700px at 95% -12%, rgba(179, 118, 29, 0.17), transparent 58%),
-    radial-gradient(950px 650px at -8% 6%, rgba(169, 71, 42, 0.14), transparent 56%),
-    radial-gradient(800px 560px at 62% 112%, rgba(123, 58, 76, 0.08), transparent 62%),
-    linear-gradient(165deg, #fcf2df 0%, var(--paper) 46%, #eed9bd 100%);
-  background-attachment: fixed;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.55;
-  background-image: radial-gradient(rgba(107, 74, 47, 0.1) 0.7px, transparent 0.8px);
-  background-size: 18px 18px;
+  background: var(--paper);
 }
 
 ::selection { background: var(--moss-mid); color: #fdfbf4; }
@@ -123,7 +107,7 @@ svg { flex: none; }
 
 kbd {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1;
   padding: 3px 5px;
   border: 1px solid var(--line-strong);

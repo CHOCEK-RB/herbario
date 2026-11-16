@@ -5,7 +5,7 @@
 .toast {
   position: fixed;
   left: 50%;
-  bottom: 28px;
+  top: 66px;
   z-index: 80;
   transform: translateX(-50%);
   display: flex;
@@ -36,11 +36,11 @@
   border-radius: 99px;
   background: var(--panel);
   color: var(--muted);
-  font-size: 11.5px;
+  font-size: 12px;
 }
 .milestone.done { color: var(--moss-dark); border-color: color-mix(in srgb, var(--moss) 30%, transparent); background: var(--moss-soft); }
 .milestone.now { color: var(--ochre); border-color: color-mix(in srgb, var(--honey-mid) 35%, transparent); background: var(--ochre-soft); }
-.milestone.now::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ochre); animation: pulse 1.1s infinite; }
+.milestone.now::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ochre); animation: pulse 1.1s 2; }
 .bar { height: 4px; border-radius: 99px; background: var(--line); overflow: hidden; }
 .bar span { display: block; height: 100%; background: var(--moss); transition: width 400ms var(--ease); }
 
@@ -131,10 +131,10 @@
   .voice-counts { grid-template-columns: 1fr; }
   .voice-count { gap: 9px; }
   .voice-label { white-space: normal; overflow: visible; text-overflow: clip; }
-  .voice-cue { font-size: 11.5px; }
+  .voice-cue { font-size: 12px; }
   .params { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .composer-foot { gap: 6px; }
-  .composer-hint { font-size: 11px; }
+  .composer-hint { font-size: 12px; }
   .brief-line { align-items: flex-start; }
   .brief-known { flex: 1 1 100%; }
   .brief-trigger { width: 100%; justify-content: center; }
@@ -151,15 +151,15 @@
   .ledger-filters { flex-direction: column; }
   .tree-tools { padding: 8px 9px; gap: 6px; }
   .tree-tools input { flex-basis: 100%; }
-  .tree-summary { padding: 6px 10px; font-size: 10px; gap: 2px 10px; }
+  .tree-summary { padding: 6px 10px; font-size: 12px; gap: 2px 10px; }
   .tree-summary span:not(:last-child)::after { margin-left: 10px; }
   .tree-body { padding: 8px 9px 12px; }
   .tree-children { margin-left: 10px; padding-left: 9px; }
   .tree-children > .tree-item::before { left: -9px; width: 9px; }
   .tree-card { padding: 6px 7px; font-size: 12.5px; gap: 2px 7px; flex-wrap: wrap; }
   .tree-title { flex: 1 1 100%; white-space: normal; }
-  .tree-meta { flex: 1 1 100%; font-size: 10.5px; gap: 4px; }
-  .tree-item .status, .tree-item .lines { font-size: 10px; }
+  .tree-meta { flex: 1 1 100%; font-size: 12px; gap: 4px; }
+  .tree-item .status, .tree-item .lines { font-size: 12px; }
   .modal { max-height: 88vh; }
   .search-scope { flex-wrap: wrap; }
   .search-count { width: 100%; margin-left: 0; }
@@ -233,9 +233,9 @@
   margin-top: 1px;
 }
 .assumptions-bar .bar-text { min-width: 0; display: grid; gap: 1px; }
-.assumptions-bar .bar-text strong { font-size: 11px; letter-spacing: 0.02em; color: var(--sienna-dark); }
+.assumptions-bar .bar-text strong { font-size: 12px; letter-spacing: 0.02em; color: var(--sienna-dark); }
 .assumptions-bar .first { color: var(--ink-soft); font-weight: 600; line-height: 1.35; }
-.assumptions-bar .why { color: var(--sienna-dark); font-size: 10.5px; line-height: 1.35; opacity: 0.85; }
+.assumptions-bar .why { color: var(--sienna-dark); font-size: 12px; line-height: 1.35; opacity: 1; }
 .assumptions-bar .bar-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
 .assumptions-bar .bar-edit { display: flex; gap: 4px; margin-top: 5px; }
 .assumptions-bar .bar-edit input {
@@ -262,7 +262,7 @@
   border: 1px dashed var(--line-strong);
   border-radius: 8px;
   background: transparent;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--muted);
   text-align: center;
 }
@@ -438,7 +438,7 @@
   .tree-stats { padding: 8px 10px; gap: 6px; }
   .tree-stat { padding: 7px 8px; gap: 7px; }
   .tree-stat strong { font-size: 16px; }
-  .tree-stat span { font-size: 9px; }
+  .tree-stat span { font-size: 12px; }
   .tree-body { padding: 8px 9px 14px; }
   .tree-children { margin-left: 9px; padding-left: 8px; }
   .tree-children > .tree-item::before { left: -8px; width: 8px; }
@@ -451,9 +451,9 @@
     padding: 8px 8px 8px 9px;
   }
   .tree-title { grid-column: 1; grid-row: 1; white-space: normal; }
-  .tree-meta { grid-column: 1 / -1; grid-row: 2; font-size: 10.5px; gap: 3px 5px; }
+  .tree-meta { grid-column: 1 / -1; grid-row: 2; font-size: 12px; gap: 3px 5px; }
   .tree-go { grid-column: 2; grid-row: 1; opacity: 0.55; }
-  .tree-modal .modal-foot { padding: 8px 11px; font-size: 10.5px; }
+  .tree-modal .modal-foot { padding: 8px 11px; font-size: 12px; }
 }
 
 /* En móvil dejamos visible la etiqueta de "Ejemplo": el matraz solo no basta. */
