@@ -33,11 +33,12 @@
   );
   const pinned = $derived(sorted.filter((n) => n.pinned));
   const recent = $derived(sorted.slice(0, shown));
+  let expandedGroups = $state<Record<string, boolean>>({});
   const groups = $derived(
     app.session.branches
       .map((b) => {
         const items = sorted.filter((n) => n.branchId === b.id);
-        return { branch: b, total: items.length, items: items.slice(0, 8) };
+        return { branch: b, total: items.length, items: items.slice(0, expandedGroups[b.id] ? items.length : 8) };
       })
       .filter((g) => g.total)
   );
@@ -84,7 +85,7 @@
           <span class="mem-title">{#if n.pinned}<Pin size={11} class="pin-inline" aria-label="Fijada" />{/if}{n.title}</span>
           <span class="mem-meta">
             {n.species} · {shortDate(n.date)}
-            {#if pending(n)}<span class="pending">{pending(n)} por confirmar</span>{/if}
+            {#if pending(n)}<span class="pending">{pending(n)} por confirmar</span>{:else if n.status === 'lista'}<span class="lines">Revisada</span>{/if}
             {#if lineCount(n) > 1}<span class="lines">{lineCount(n)} líneas</span>{/if}
           </span>
           <span class="mem-snippet">{snippet(n)}</span>
@@ -104,13 +105,15 @@
               <span class="mem-title">{n.title}</span>
               <span class="mem-meta">
                 {shortDate(n.date)}
-                {#if pending(n)}<span class="pending">{pending(n)} por confirmar</span>{/if}
+                {#if pending(n)}<span class="pending">{pending(n)} por confirmar</span>{:else if n.status === 'lista'}<span class="lines">Revisada</span>{/if}
                 {#if lineCount(n) > 1}<span class="lines">{lineCount(n)} líneas</span>{/if}
               </span>
             </button>
           {/each}
           {#if group.total > group.items.length}
-            <p class="panel-note group-more">+{group.total - group.items.length} más · usa Buscar</p>
+            <button class="more-mem" onclick={() => (expandedGroups[group.branch.id] = true)}>
+              Mostrar {group.total - group.items.length} más
+            </button>
           {/if}
         </section>
       {:else}
@@ -136,7 +139,7 @@
 
   <footer class="mem-foot">
     <span><MessagesSquare size={13} /> {nodes.length} respuestas · {totalPending} supuestos pendientes</span>
-    <div>
+    <div class="only-mobile">
       <button class="link" onclick={openMap}><GitBranch size={13} /> Árbol</button>
       <button class="link" onclick={() => openLedger('sesion')}><ScrollText size={13} /> Historial</button>
     </div>
