@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Card, CardType } from '#lib/types';
-  import { app, activeNode, allNodes, briefSummary, inheritedCards, openNode, ownCards, unconfirmed } from '#lib/store.svelte';
+  import type { Card } from '#lib/types';
+  import { app, activeNode, briefSummary, inheritedCards, openNode, ownCards, unconfirmed } from '#lib/store.svelte';
   import { focusTrap } from '#lib/focus';
   import Carta from './Carta.svelte';
   import {
@@ -8,17 +8,13 @@
     FileText,
     GitFork,
     Lightbulb,
-    MessagesSquare,
     ScrollText,
     Sparkles,
     UserRound,
     X
   } from '@lucide/svelte';
 
-  let sessionQuery = $state('');
-  let branchFilter = $state('');
   let archiveScope = $state<'heredadas' | 'propias' | 'todas'>('heredadas');
-  let archiveType = $state<CardType | null>(null);
   let archiveQuery = $state('');
 
   const node = $derived(activeNode());
@@ -33,7 +29,6 @@
   const archiveFiltered = $derived.by(() => {
     const q = archiveQuery.trim().toLowerCase();
     return archivePool.filter((c) => {
-      if (archiveType && c.type !== archiveType) return false;
       if (q && !`${c.text} ${c.type} ${c.scope}`.toLowerCase().includes(q)) return false;
       return true;
     });
@@ -43,12 +38,6 @@
     { id: 'heredadas', label: 'De otras respuestas' },
     { id: 'propias', label: 'De esta respuesta' },
     { id: 'todas', label: 'Todo' }
-  ];
-  const archiveTypes: { id: CardType; label: string }[] = [
-    { id: 'hecho', label: 'Datos' },
-    { id: 'supuesto', label: 'Suposiciones' },
-    { id: 'preferencia', label: 'Preferencias' },
-    { id: 'artefacto', label: 'Materiales' }
   ];
   const assumptions = $derived(
     node?.cards.filter((c) => c.type === 'supuesto' && c.source !== 'usuario' && c.state !== 'ignorado') ?? []
@@ -61,7 +50,7 @@
   );
   const brief = $derived(briefSummary(node?.brief));
   const typeLabel: Record<string, string> = {
-    hecho: 'Dato sin fuente',
+    hecho: 'Dato',
     supuesto: 'Suposición',
     preferencia: 'Preferencia',
     artefacto: 'Material'
@@ -70,22 +59,10 @@
   const branches = $derived(app.session.branches);
   const tabs = [
     { id: 'lamina' as const, label: 'Esta respuesta', icon: FileText },
-    { id: 'sesion' as const, label: 'Este jardín', icon: MessagesSquare },
-    { id: 'heredado' as const, label: 'Heredado', icon: GitFork }
+    { id: 'heredado' as const, label: 'Lo que recuerda', icon: GitFork }
   ];
-  const sessionNodes = $derived(
-    allNodes()
-      .filter((n) => {
-        if (branchFilter && n.branchId !== branchFilter) return false;
-        const q = sessionQuery.trim().toLowerCase();
-        if (!q) return true;
-        return `${n.title} ${n.prompt} ${n.esencia} ${n.species}`.toLowerCase().includes(q);
-      })
-      .sort((a, b) => b.date.localeCompare(a.date))
-  );
-  const shownNodes = $derived(sessionNodes.slice(0, app.ledgerLimit));
 
-  function setTab(tab: 'lamina' | 'sesion' | 'heredado') {
+  function setTab(tab: 'lamina' | 'heredado') {
     app.ledgerTab = tab;
     app.ledgerLimit = 30;
   }
@@ -98,33 +75,26 @@
     openNode(id);
     close();
   }
-
-  const statusLabel: Record<string, string> = {
-    lista: 'lista',
-    borrador: 'borrador',
-    generando: 'generando',
-    desactualizada: 'desactualizada'
-  };
 </script>
 
 {#if app.ledgerOpen}
   <div class="overlay">
-    <button class="scrim" aria-label="Cerrar libro de campo" onclick={close}></button>
+    <button class="scrim" aria-label="Cerrar Memoria" onclick={close}></button>
     <div
       class="modal ledger"
       role="dialog"
       aria-modal="true"
-      aria-label="Libro de campo"
+      aria-label="Memoria"
       tabindex="-1"
       use:focusTrap
     >
       <header class="ledger-head">
         <span class="modal-icon"><ScrollText size={17} /></span>
         <div>
-          <h2>Historial</h2>
-          <p>{app.session.title} · {allNodes().length} respuestas · registro, no chat</p>
+          <h2>Memoria</h2>
+          <p>{app.session.title} · qué recuerda la IA y de dónde salió esta respuesta</p>
         </div>
-        <button class="icon-btn" aria-label="Cerrar historial" onclick={close}><X size={18} /></button>
+        <button class="icon-btn" aria-label="Cerrar Memoria" onclick={close}><X size={18} /></button>
       </header>
 
       <div class="facets">
@@ -205,58 +175,10 @@
             </section>
           </div>
         {/if}
-      {:else if app.ledgerTab === 'sesion'}
-        <div class="ledger-filters">
-          <input
-            class="modal-input"
-            placeholder="Filtrar el libro por planta, síntoma o consulta…"
-            bind:value={sessionQuery}
-            aria-label="Filtrar el historial del jardín"
-          />
-          <select bind:value={branchFilter} aria-label="Filtrar por hilo">
-            <option value="">Todos los hilos</option>
-            {#each branches as b (b.id)}
-              <option value={b.id}>{b.name}</option>
-            {/each}
-          </select>
-        </div>
-
-        <div class="ledger-body">
-          {#if sessionNodes.length === 0}
-            <div class="results-empty">Ninguna respuesta con ese filtro.</div>
-          {:else}
-            {#each shownNodes as n (n.id)}
-              <article class="entry" class:active={n.id === app.activeNodeId}>
-                <header>
-                  <div>
-                    <strong>{n.title}{#if n.id === app.activeNodeId} <span class="lines">actual</span>{/if}</strong>
-                    <span class="entry-meta">{n.date} · {branches.find((b) => b.id === n.branchId)?.name ?? '—'} · {statusLabel[n.status]}</span>
-                  </div>
-                  <button class="btn tiny" onclick={() => go(n.id)}>
-                    Abrir
-                    <ArrowUpRight size={12} />
-                  </button>
-                </header>
-                <p class="entry-ask"><span>Tú dijiste:</span> {n.prompt}</p>
-                <p class="entry-ai"><span>La IA propuso:</span> {n.esencia}</p>
-                <p class="entry-sup">
-                  <span>La IA supuso:</span>
-                  {n.cards.filter((c) => c.type === 'supuesto').length} supuestos
-                  ({n.cards.filter((c) => c.type === 'supuesto' && c.state === 'sin_confirmar').length} sin confirmar)
-                </p>
-              </article>
-            {/each}
-            {#if sessionNodes.length > shownNodes.length}
-              <button class="more-btn" onclick={() => (app.ledgerLimit += 30)}>
-                Mostrar 30 más · quedan {sessionNodes.length - shownNodes.length}
-              </button>
-            {/if}
-          {/if}
-        </div>
       {:else}
         {#if !node}
           <div class="ledger-body">
-            <div class="results-empty">Abre una respuesta para revisar su archivo de contexto.</div>
+            <div class="results-empty">Abre una respuesta para revisar qué recuerda la IA.</div>
           </div>
         {:else}
           <div class="ledger-filters">
@@ -285,29 +207,16 @@
                 </span>
               </button>
             {/each}
-            {#each archiveTypes as t (t.id)}
-              <button
-                class="facet"
-                class:on={archiveType === t.id}
-                onclick={() => {
-                  archiveType = archiveType === t.id ? null : t.id;
-                  app.ledgerLimit = 30;
-                }}
-              >
-                {t.label}
-              </button>
-            {/each}
           </div>
 
           <div class="ledger-body">
             {#if archiveFiltered.length === 0}
               <div class="results-empty">
-                <p>Ninguna carta con ese filtro para {node.species}.</p>
+                <p>No hay recuerdos que coincidan para {node.species}.</p>
                 <button
                   class="btn tiny"
                   onclick={() => {
                     archiveScope = 'todas';
-                    archiveType = null;
                     archiveQuery = '';
                   }}
                 >Limpiar filtros</button>

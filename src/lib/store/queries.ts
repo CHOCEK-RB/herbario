@@ -163,7 +163,7 @@ export function openSearch() {
   app.ledgerOpen = false;
 }
 
-export function openLedger(tab: "lamina" | "sesion" | "heredado" = "lamina") {
+export function openLedger(tab: "lamina" | "heredado" = "lamina") {
   app.ledgerTab = tab;
   app.ledgerLimit = 30;
   app.ledgerOpen = true;

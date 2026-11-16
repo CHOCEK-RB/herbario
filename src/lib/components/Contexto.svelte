@@ -35,7 +35,7 @@
       <h2><Layers size={15} /> Contexto de esta respuesta</h2>
       <p>Tus datos, lo que la IA supuso y lo que propuso. Tu mensaje está arriba, siempre visible.</p>
     </div>
-    <button class="btn tiny ghost" onclick={() => openLedger('lamina')}><ScrollText size={13} /> Ver historial</button>
+    <button class="btn tiny ghost" onclick={() => openLedger('lamina')}><ScrollText size={13} /> Ver en Memoria</button>
   </div>
 
   <div class="voice-counts">
@@ -122,7 +122,7 @@
     <p class="inherited-line">
       <GitFork size={13} />
       {inherited.length} {inherited.length === 1 ? 'carta heredada' : 'cartas heredadas'} de otras respuestas.
-      <button class="link" onclick={() => openLedger('heredado')}>Revisar herencia</button>
+      <button class="link" onclick={() => openLedger('heredado')}>Ver lo que recuerda</button>
     </p>
   {/if}
 </section>

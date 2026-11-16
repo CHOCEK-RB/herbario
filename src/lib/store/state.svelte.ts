@@ -24,7 +24,7 @@ export const app = $state({
   searchOnlyUnconfirmed: false,
   searchScope: "sesion" as "sesion" | "todas",
   ledgerOpen: false,
-  ledgerTab: "lamina" as "lamina" | "sesion" | "heredado",
+  ledgerTab: "lamina" as "lamina" | "heredado",
   ledgerLimit: 30,
   mapOpen: false,
   mapZoom: "medio" as "lejos" | "medio" | "cerca",

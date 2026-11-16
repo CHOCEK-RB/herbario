@@ -83,7 +83,7 @@
     } else if (event.key.toLowerCase() === 'm') {
       openMap();
     } else if (event.key.toLowerCase() === 'l') {
-      openLedger('sesion');
+      openLedger('heredado');
     } else if (event.key.toLowerCase() === 'n') {
       newConsultation();
     } else if (event.key === '[') {
@@ -120,8 +120,8 @@
       <button class="btn ghost" onclick={openSearch} aria-label="Buscar (tecla /)" title="Buscar (/)">
         <Search size={15} /><span class="btn-label">Buscar</span><kbd>/</kbd>
       </button>
-      <button class="btn ghost desktop-only" onclick={() => openLedger('sesion')} title="Historial (L)">
-        <ScrollText size={15} /><span class="btn-label">Historial</span><kbd>L</kbd>
+      <button class="btn ghost desktop-only" onclick={() => openLedger('heredado')} title="Memoria (L)">
+        <ScrollText size={15} /><span class="btn-label">Memoria</span><kbd>L</kbd>
       </button>
       <button class="btn ghost desktop-only" onclick={openMap} title="Árbol (M)">
         <GitBranch size={15} /><span class="btn-label">Árbol</span><kbd>M</kbd>

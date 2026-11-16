@@ -467,7 +467,7 @@
       <Cpu size={13} />
       <span>{node.model}</span>
       <div class="prov-actions">
-        <button class="link" onclick={() => openLedger('lamina')}><MessagesSquare size={13} /> Ver las tres voces</button>
+        <button class="link" onclick={() => openLedger('lamina')}><MessagesSquare size={13} /> Ver en Memoria</button>
         <button class="link" onclick={() => reformulate(node)}><RefreshCw size={13} /> Reformular</button>
         {#if Object.keys(node.replaced).length}
           <button class="link" onclick={() => restoreTerms(node)}><Undo2 size={13} /> Restaurar términos</button>

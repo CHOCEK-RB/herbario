@@ -141,7 +141,7 @@
     <span><MessagesSquare size={13} /> {nodes.length} respuestas · {totalPending} supuestos pendientes</span>
     <div class="only-mobile">
       <button class="link" onclick={openMap}><GitBranch size={13} /> Árbol</button>
-      <button class="link" onclick={() => openLedger('sesion')}><ScrollText size={13} /> Historial</button>
+      <button class="link" onclick={() => openLedger('heredado')}><ScrollText size={13} /> Memoria</button>
     </div>
     <label class="session-select">
       <span class="sr-only">Jardín</span>
