@@ -42,6 +42,7 @@
         <span class="first">{critical[0].text}</span>
         {#if critical[0].detail}<span class="why">{critical[0].detail}</span>{/if}
       {:else}
+        {#if critical[0].detail}<span class="why">{critical[0].detail}</span>{/if}
         <form
           class="bar-edit"
           onsubmit={(e) => {

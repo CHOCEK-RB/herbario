@@ -87,6 +87,11 @@
   function pinOwner() {
     if (owner) togglePin(owner);
   }
+  const scopeLabels: Record<string, string> = {
+    hilo: 'Esta respuesta',
+    especie: 'Esta planta',
+    global: 'Todas tus plantas'
+  };
 </script>
 
 <div class="card {card.type}" class:compact>
@@ -94,10 +99,13 @@
     <TypeIcon size={13} />
     <span class="tag">{labels[card.type]}</span>
     <span class="voice" class:from-user={card.source === 'usuario'}>{voice}</span>
+    {#if card.type === 'supuesto' && card.state === 'sin_confirmar'}
+      <span class="pending">Sin confirmar</span>
+    {/if}
     {#if card.type === 'supuesto' && card.confidence}
       <span class="scope">confianza {card.confidence}</span>
     {:else}
-      <span class="scope">{card.scope}</span>
+      <span class="scope">{scopeLabels[card.scope] ?? card.scope}</span>
     {/if}
   </div>
 
@@ -146,8 +154,8 @@
           <div class="more-menu">
             <button class="btn tiny ghost" onclick={() => begin('correct')}><Pencil size={12} /> Corregir</button>
             <button class="btn tiny ghost" onclick={() => ignoreCard(card)}><EyeOff size={12} /> Ignorar</button>
-            <button class="btn tiny ghost" onclick={() => nextScope(card)}><Globe size={12} /> Ámbito: {card.scope}</button>
-            <button class="btn tiny ghost" onclick={() => removeCard(card)}><Trash size={12} /> Quitar</button>
+            <button class="btn tiny ghost" onclick={() => nextScope(card)}><Globe size={12} /> Alcance: {scopeLabels[card.scope] ?? card.scope}</button>
+            <button class="btn tiny ghost" onclick={() => confirm('¿Quitar esta suposición?') && removeCard(card)}><Trash size={12} /> Quitar</button>
           </div>
         </details>
       {:else if card.type === 'preferencia'}
@@ -159,8 +167,8 @@
             <ChevronDown class="chevron" size={12} />
           </summary>
           <div class="more-menu">
-            <button class="btn tiny ghost" onclick={() => nextScope(card)}><Globe size={12} /> Ámbito: {card.scope}</button>
-            <button class="btn tiny ghost" onclick={() => removeCard(card)}><Trash size={12} /> Descartar</button>
+            <button class="btn tiny ghost" onclick={() => nextScope(card)}><Globe size={12} /> Alcance: {scopeLabels[card.scope] ?? card.scope}</button>
+            <button class="btn tiny ghost" onclick={() => confirm('¿Descartar esta preferencia?') && removeCard(card)}><Trash size={12} /> Descartar</button>
           </div>
         </details>
       {:else}

@@ -64,6 +64,7 @@
       <span class="voice-icon" aria-hidden="true"><Lightbulb size={16} /></span>
       <strong>{assumed.length}</strong>
       <span class="voice-label">La IA supuso</span>
+      {#if pending}<span class="pending">{pending} por confirmar</span>{/if}
       <span class="voice-cue">
         <span class="cue-text">{open === 'assumed' ? 'Ocultar' : 'Ver'}</span>
         <ChevronDown class="chevron" size={13} />
@@ -102,7 +103,7 @@
         <p class="voice-note">{pending} {pending === 1 ? 'suposición sin confirmar' : 'suposiciones sin confirmar'} · revisa y confirma o corrige.</p>
       {/if}
       {#each assumed as card (card.id)}
-        <Carta {card} compact />
+        <Carta {card} />
       {:else}
         <p class="voice-empty">No hay suposiciones. Todo lo que ves está confirmado o lo aportaste tú.</p>
       {/each}
