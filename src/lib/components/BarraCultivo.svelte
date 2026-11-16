@@ -24,6 +24,7 @@
 
   let briefOpen = $state(false);
   let textarea: HTMLTextAreaElement | undefined = $state();
+  let speciesCta: HTMLButtonElement | undefined = $state();
 
   const streaming = $derived(streamingNode());
   const branch = $derived(activeBranch());
@@ -57,18 +58,9 @@
     return app.assumptionEdits[id] ?? fallback;
   }
 
-  function editHint(id: string, value: string) {
-    app.assumptionEdits[id] = value;
-  }
-
-  function removeHint(id: string) {
-    app.assumptionOff[id] = true;
-  }
-
-  function restoreHints() {
-    app.assumptionEdits = {};
-    app.assumptionOff = {};
-  }
+  const customEditsCount = $derived(
+    Object.keys(app.assumptionEdits).length + Object.keys(app.assumptionOff).length
+  );
 
   function assumptions() {
     const fromHints = visibleHints.map((h) => ({ text: hintValue(h.id, h.text) }));
@@ -90,7 +82,10 @@
 
   function submit() {
     if (!canSend) return;
-    if (mismatch) return;
+    if (mismatch) {
+      speciesCta?.focus();
+      return;
+    }
     send(assumptions());
   }
 
@@ -123,7 +118,7 @@
             Tu mensaje habla de {mismatch}. Si genero aquí, mezclo el contexto de dos plantas.
           </p>
         </div>
-        <button class="btn primary" onclick={sendForSpecies}>
+        <button bind:this={speciesCta} class="btn primary" onclick={sendForSpecies}>
           Crear hilo de {mismatch.split(' ')[0]}
         </button>
       </div>
@@ -161,7 +156,7 @@
         <button
           class="btn ghost"
           onclick={() => (briefOpen = !briefOpen)}
-        ><WandSparkles size={15} /> Afina la respuesta</button>
+        ><WandSparkles size={15} /> Afina la respuesta{#if customEditsCount} ({customEditsCount}){/if}</button>
         {#if streaming}
           <button class="btn stop" onclick={stopGeneration}><Square size={12} /> Detener</button>
         {:else}

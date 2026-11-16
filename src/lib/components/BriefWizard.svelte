@@ -180,10 +180,11 @@
           <strong>Con esto puedo responder.</strong>
           <p>Genera cuando quieras; lo que no hayas marcado aparecerá como suposición editable.</p>
         </div>
+        <button class="btn tiny" onclick={() => (open = false)}>Cerrar</button>
       </div>
     {/if}
 
-    {#if visibleHints.length}
+    {#if !current && visibleHints.length}
       <div class="brief-assumes">
         <span class="brief-assumes-label">También asumiré</span>
         {#each visibleHints as hint (hint.id)}
